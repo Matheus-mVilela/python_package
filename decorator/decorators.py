@@ -60,6 +60,15 @@ def redis_instance(function):
 
     return wrapper
 
-@redis_instance
-    def test_grouper_scenario_1(redis_instance=None):
-        return
+
+def printtime(func):
+    def wraper(*arg, **kwargs):
+        cached_time = datetime.datetime.now()
+        x=func(*arg, **kwargs)
+        finish_time = datetime.datetime.now()
+        log.registry(
+                    log.LOGGING_ENUM.INFO,
+                    f'############# TEMPO DE EXECUCAO TO_REDIS{finish_time-cached_time}',
+                )
+        return x
+    return wraper
